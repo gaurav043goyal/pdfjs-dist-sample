@@ -1,0 +1,20 @@
+{
+  "name": "evecutable-bundle",
+  "version": "1.0.0",
+  "description": "Example to creating single exexutable bundle",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "build": "esbuild server.js --bundle --platform=node --outfile=server-out.cjs --target=node20.3.1 --format=cjs --loader:.node=file",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gaurav Goyal",
+  "license": "ISC",
+  "dependencies": {
+    "pdfjs-dist": "3.11.174"
+  },
+  "devDependencies": {
+    "esbuild": "^0.18.17"
+  }
+}
