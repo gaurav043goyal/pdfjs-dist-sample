@@ -5,7 +5,7 @@ import * as pdfWorker from 'pdfjs-dist/build/pdf.worker.js';
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
-const pdfToText = async function ({ file, dataBuffer, startPage = 1, endPage = Number.MAX_VALUE, columnSeparator = '', rowSeparator = '\n', renderOptions }) {
+const pdfToText = async function ({ file, dataBuffer, startPage = 1, endPage = Number.MAX_VALUE, columnSeparator = '', rowSeparator = '\n', renderOptions, spaceWidth = 3.3599299992084832 }) {
     try {
         if (file) {
             dataBuffer = Uint8Array.from(await fs.readFile(file));
@@ -25,7 +25,11 @@ const pdfToText = async function ({ file, dataBuffer, startPage = 1, endPage = N
         for (let pageNumber = startPage; pageNumber <= endPage; pageNumber++) {
             const page = await doc.getPage(pageNumber);
 
-            const textContent = await page.getTextContent(renderOptions);
+            const textContent = await page.getTextContent({
+                includeMarkedContent: false,
+                disableNormalization: true,
+                ...renderOptions
+            });
             let lastY, row = [];
             const pageText = [];
             for (const item of textContent.items) {
@@ -33,6 +37,9 @@ const pdfToText = async function ({ file, dataBuffer, startPage = 1, endPage = N
                     row = [];
                     pageText.push(row);
                     lastY = item.transform[5];
+                }
+                if (item.str === ' ' && spaceWidth) {
+                    item.str = ' '.repeat(item.width / spaceWidth);
                 }
                 row.push(item.str);
             }
