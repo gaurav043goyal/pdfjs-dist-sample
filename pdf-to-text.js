@@ -1,6 +1,6 @@
-import * as pdfjs from 'pdfjs-dist';
+import pdfjs from 'pdfjs-dist';
 import fs from 'fs/promises';
-import * as pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs';
+import * as pdfWorker from 'pdfjs-dist/build/pdf.worker.js';
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 

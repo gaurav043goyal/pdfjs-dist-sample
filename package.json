@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "build": "esbuild server.js --bundle --platform=node --outfile=server-out.mjs --target=node20.3.1 --format=esm --loader:.node=file",
+    "build": "esbuild server.js --bundle --platform=node --outfile=server-out.cjs --target=node20.3.1 --format=cjs --loader:.node=file",
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate-sea": "node --experimental-sea-config sea-config.json",
     "generate-baseExe": "node -e \"require('fs').copyFileSync(process.execPath, 'CatExport.exe')\"",
@@ -18,7 +18,7 @@
   "author": "Gaurav Goyal",
   "license": "ISC",
   "dependencies": {
-    "pdfjs-dist": "4.0.269"
+    "pdfjs-dist": "3.11.174"
   },
   "devDependencies": {
     "esbuild": "^0.18.17",
