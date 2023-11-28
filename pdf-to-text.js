@@ -1,11 +1,15 @@
-// import pdfjs from 'pdfjs-dist';
-import pdfjs from 'pdfjs-dist/build/pdf.js';
+import * as pdfjs from 'pdfjs-dist';
 import fs from 'fs/promises';
-import * as pdfWorker from 'pdfjs-dist/build/pdf.worker.js';
+import * as pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs';
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
-const pdfToText = async function ({ file, dataBuffer, startPage = 1, endPage = Number.MAX_VALUE, columnSeparator = '', rowSeparator = '\n', renderOptions, spaceWidth = 3.3599299992084832 }) {
+const TRANSFORMS = {
+    X: 4,
+    Y: 5
+};
+
+const pdfToText = async function ({ file, dataBuffer, startPage = 1, endPage = Number.MAX_VALUE, columnSeparator = '', rowSeparator = '\n', renderOptions, addStartingSpace = 4 }) {
     try {
         if (file) {
             dataBuffer = Uint8Array.from(await fs.readFile(file));
@@ -26,20 +30,18 @@ const pdfToText = async function ({ file, dataBuffer, startPage = 1, endPage = N
             const page = await doc.getPage(pageNumber);
 
             const textContent = await page.getTextContent({
-                includeMarkedContent: false,
-                disableNormalization: true,
                 ...renderOptions
             });
             let lastY, row = [];
             const pageText = [];
             for (const item of textContent.items) {
-                if (lastY !== item.transform[5]) {
+                if (lastY !== item.transform[TRANSFORMS.Y]) {
                     row = [];
                     pageText.push(row);
-                    lastY = item.transform[5];
-                }
-                if (item.str === ' ' && spaceWidth) {
-                    item.str = ' '.repeat(item.width / spaceWidth);
+                    lastY = item.transform[TRANSFORMS.Y];
+                    if (addStartingSpace && item.transform[TRANSFORMS.X] > addStartingSpace) {
+                        row.push(' ');
+                    }
                 }
                 row.push(item.str);
             }

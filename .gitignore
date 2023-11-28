@@ -3,3 +3,5 @@ CatExport.exe
 canvas-JILBIABC.node
 sea-prep.blob
 server-out.cjs
+*.pdf
+server-out.mjs

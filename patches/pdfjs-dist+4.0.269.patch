@@ -1,0 +1,34 @@
+diff --git a/node_modules/pdfjs-dist/build/pdf.worker.mjs b/node_modules/pdfjs-dist/build/pdf.worker.mjs
+index 70b4b9c..b1ed31d 100644
+--- a/node_modules/pdfjs-dist/build/pdf.worker.mjs
++++ b/node_modules/pdfjs-dist/build/pdf.worker.mjs
+@@ -32863,7 +32863,7 @@ class PartialEvaluator {
+           glyphWidth = glyph.vmetric ? glyph.vmetric[0] : -glyphWidth;
+         }
+         let scaledDim = glyphWidth * scale;
+-        if (category.isWhitespace) {
++        /*if (category.isWhitespace) {
+           if (!font.vertical) {
+             charSpacing += scaledDim + textState.wordSpacing;
+             textState.translateTextMatrix(charSpacing * textState.textHScale, 0);
+@@ -32873,7 +32873,7 @@ class PartialEvaluator {
+           }
+           saveLastChar(" ");
+           continue;
+-        }
++        }*/
+         if (!category.isZeroWidthDiacritic && !compareWithLastPosition(scaledDim)) {
+           if (!font.vertical) {
+             textState.translateTextMatrix(scaledDim * textState.textHScale, 0);
+@@ -32899,9 +32899,9 @@ class PartialEvaluator {
+           textChunk.prevTransform = getCurrentTextTransform();
+         }
+         const glyphUnicode = glyph.unicode;
+-        if (saveLastChar(glyphUnicode)) {
++        /*if (saveLastChar(glyphUnicode)) {
+           textChunk.str.push(" ");
+-        }
++        }*/
+         textChunk.str.push(glyphUnicode);
+         if (charSpacing) {
+           if (!font.vertical) {
